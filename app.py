@@ -43,7 +43,17 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
+st.markdown(
+    """
+    <style>
+    /* Ocultar el menú de hamburguesa superior y el pie de página "Created with Streamlit" */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 # Estilo visual avanzado: Escala de grises minimalista, ultra compacto y elegante estilo militar HUD
 st.markdown(
     """
@@ -116,7 +126,7 @@ st.title("⚓ US NAVY & USCG // GLOBAL FLEET COMMAND STATUS")
 # --- CONEXIÓN EN VIVO CON GOOGLE SHEETS ---
 @st.cache_data(ttl=30)
 def load_data_from_cloud():
-  sheet_id = "1_2k9uw4QjS-YkRT0EBlMQQ2Tnvl_r3OqOw5DOG8qFzk"
+  sheet_id = st.secrets["SHEET_ID"]
   csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
   try:
     return pd.read_csv(csv_url)
@@ -222,4 +232,4 @@ m1.metric("AVAILABLE", "🟢 STBY", "Nominal")
 m2.metric("POST-DEPLOY", "🟠 REST", "Rotación")
 m3.metric("MAINTENANCE", "🔴 DRYDOCK", "Reparación")
 m4.metric("DEPLOYED", "🔵 ACTIVE", "En Misión")
-m5.metric("TRAINING", "⚪ COMP", "Maniobras")
+m5.metric("TRAINING", "⚪ COMP", "Maniobras") 
