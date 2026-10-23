@@ -9,11 +9,11 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Estilo visual en escala de grises minimalista, ultra compacto y elegante
+# Estilo visual avanzado: Escala de grises minimalista, ultra compacto y elegante estilo militar HUD
 st.markdown(
     """
     <style>
-    .main { background-color: #0b0f12; }
+    .main { background-color: #07090b; }
     html, body, [class*="st-"] {
         font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         font-size: 12px !important;
@@ -21,27 +21,41 @@ st.markdown(
     }
     .enc-header {
         font-family: 'Courier New', Courier, monospace;
-        background: #111827;
+        background: linear-gradient(90deg, #111827 0%, #030712 100%);
         border: 1px solid #1f2937;
-        padding: 10px 15px;
+        border-left: 3px solid #3b82f6;
+        padding: 12px 18px;
         border-radius: 4px;
         color: #9ca3af;
         font-size: 11px;
-        letter-spacing: 0.5px;
-        margin-bottom: 15px;
+        letter-spacing: 0.8px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
     }
     h1 {
-        font-size: 18px !important;
-        font-weight: 600;
-        letter-spacing: 1px;
+        font-size: 20px !important;
+        font-weight: 700;
+        letter-spacing: 1.5px;
         color: #f3f4f6;
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
     }
     h3 {
-        font-size: 13px !important;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        color: #9ca3af;
+        font-size: 12px !important;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: #60a5fa;
         text-transform: uppercase;
+        border-bottom: 1px solid #1f2937;
+        padding-bottom: 5px;
+        margin-top: 20px;
+    }
+    /* Estilo profesional para métricas */
+    div[data-testid="metric-container"] {
+        background-color: #0b0f12;
+        border: 1px solid #1f2937;
+        padding: 10px 15px;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     </style>
 """,
@@ -53,7 +67,8 @@ st.markdown(
     f"""
     <div class="enc-header">
         <b>SYS-ID:</b> USN-USCG-GLOBAL-INTEL &nbsp;&nbsp;|&nbsp;&nbsp; 
-        <b>ACCESS:</b> LEVEL-5 (RESTRICTED) &nbsp;&nbsp;|&nbsp;&nbsp; 
+        <b>ACCESS LEVEL:</b> SECURE-5 &nbsp;&nbsp;|&nbsp;&nbsp; 
+        <b>LATENCY:</b> 24ms &nbsp;&nbsp;|&nbsp;&nbsp;
         <b>UTC TIMESTAMP:</b> {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}
     </div>
 """,
@@ -66,7 +81,6 @@ st.title("⚓ US NAVY & USCG // GLOBAL FLEET COMMAND STATUS")
 # --- CONEXIÓN EN VIVO CON GOOGLE SHEETS ---
 @st.cache_data(ttl=30)
 def load_data_from_cloud():
-  # PEGA AQUÍ TU ID DE GOOGLE SHEET ENTRE LAS BARRAS
   sheet_id = "1_2k9uw4QjS-YkRT0EBlMQQ2Tnvl_r3OqOw5DOG8qFzk"
   csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
   try:
@@ -81,12 +95,13 @@ def load_data_from_cloud():
 # Cargar datos desde la nube
 df = load_data_from_cloud()
 
-# Controles laterales y sincronización
-st.sidebar.markdown("### 🔒 SEC-OPS CLOUD CONTROLS")
-if st.sidebar.button("🔄 Sincronizar con Google Sheet"):
-  st.cache_data.clear()
-  df = load_data_from_cloud()
-  st.sidebar.success("¡Sincronización en la nube exitosa!")
+# Controles laterales y sincronización mejorados
+st.sidebar.markdown("### 🔒 SEC-OPS CONTROLS")
+if st.sidebar.button("🔄 Sincronizar Base de Datos"):
+  with st.spinner("Estableciendo enlace seguro con Google Sheets..."):
+    st.cache_data.clear()
+    df = load_data_from_cloud()
+  st.sidebar.success("¡Sincronización completada con éxito!")
 
 st.sidebar.markdown("---")
 search_query = st.sidebar.text_input(
@@ -137,10 +152,10 @@ map_data = pd.DataFrame({
     ],
 })
 
-st.map(map_data, latitude="lat", longitude="lon", zoom=1, use_container_width=True)
+st.map(map_data, latitude="lat", longitude="lon", zoom=1)
 
 
-# Colores de estado sutiles y elegantes
+# Colores de estado sutiles y elegantes para la tabla
 def color_status(val):
   val_lower = str(val).lower()
   if "available" in val_lower and "post" not in val_lower:
@@ -160,13 +175,13 @@ def color_status(val):
 st.markdown("### 📋 REGISTRO DE UNIDADES NAVALES, LOGÍSTICAS Y USCG")
 if not df.empty:
   styled_df = df.style.map(color_status, subset=["status"])
-  st.dataframe(styled_df, use_container_width=True, hide_index=True)
+  st.dataframe(styled_df, hide_index=True)
 else:
   st.warning("No hay registros disponibles en la nube.")
 
-# Indicadores de estado inferiores
+# Indicadores de estado inferiores rediseñados tipo HUD militar
 st.markdown("---")
-st.markdown("### 📊 ESTADO DE NODOS DE RED")
+st.markdown("### 📊 ESTADO DE NODOS DE RED Y FLOTA")
 m1, m2, m3, m4, m5 = st.columns(5)
 m1.metric("AVAILABLE", "🟢 STBY", "Nominal")
 m2.metric("POST-DEPLOY", "🟠 REST", "Rotación")
