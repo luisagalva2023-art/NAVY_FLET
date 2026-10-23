@@ -1,0 +1,7 @@
+hull no.,name,home port,mmsi,equipment,status,phase,location,date
+CVN-78,USS Gerald R. Ford,Norfolk VA,369970001,Reactor A1B EMALS,deployed,Operations,Atlantic Ocean,2026-06-01
+CVN-68,USS Nimitz,Bremerton WA,369970002,Reactor A4W,maintenance,PIH,Puget Sound Naval Shipyard,2026-05-15
+CVN-70,USS Carl Vinson,San Diego CA,369970003,Reactor A4W F-35C,available,Standby,San Diego CA,2026-06-10
+CVN-71,USS Theodore Roosevelt,San Diego CA,369970004,Reactor A4W,post deployment availability,Rest / Leave,San Diego CA,2026-04-20
+CVN-76,USS Ronald Reagan,Yokosuka Japan,369970005,Reactor A4W,training,COMPTUEX,Philippine Sea,2026-06-05
+CVN-72,USS Abraham Lincoln,San Diego CA,369970006,Reactor A4W,deployed,Operations,South China Sea,2026-05-28
