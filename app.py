@@ -46,10 +46,19 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Ocultar el menú de hamburguesa superior y el pie de página "Created with Streamlit" */
+    /* Ocultar la barra superior, el menú y el pie de página flotante de Streamlit */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+    
+    /* Ocultar específicamente el botón flotante de la esquina inferior derecha */
+    .viewerBadge_container__1QSob, 
+    .styles_viewerBadge__1yG5_, 
+    div[data-testid="stStatusWidget"],
+    #stDecoration {
+        display: none !important;
+        visibility: hidden !important;
+    }
     </style>
     """,
     unsafe_allow_html=True,
