@@ -1,7 +1,42 @@
 import datetime
 import pandas as pd
 import streamlit as st
+# --- SISTEMA DE AUTENTICACIÓN / LOGIN ---
+def check_password():
+  """Devuelve True si el usuario ingresó la contraseña correcta."""
 
+  def password_entered():
+    # Puedes cambiar "ADMIN123" por la contraseña que tú quieras
+    if st.session_state["password"] == "**Fleeuyt**":
+      st.session_state["password_correct"] = True
+      del st.session_state["password"]  # No guardar la contraseña en memoria
+    else:
+      st.session_state["password_correct"] = False
+
+  if "password_correct" not in st.session_state:
+    st.text_input(
+        "🔑 Ingrese la clave de acceso de seguridad (Level-5):",
+        type="password",
+        on_change=password_entered,
+        key="password",
+    )
+    return False
+  elif not st.session_state["password_correct"]:
+    st.text_input(
+        "🔑 Ingrese la clave de acceso de seguridad (Level-5):",
+        type="password",
+        on_change=password_entered,
+        key="password",
+    )
+    st.error("⛔ Acceso Denegado: Contraseña incorrecta")
+    return False
+  else:
+    return True
+
+
+# Si la contraseña no es correcta, detiene la ejecución del resto de la app
+if not check_password():
+  st.stop()
 # Configuración de página
 st.set_page_config(
     page_title="US NAVY & USCG // FLEET COMMAND SYSTEM",

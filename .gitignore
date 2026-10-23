@@ -1,0 +1,7 @@
+# Ocultar secretos y configuraciones locales
+.streamlit/secrets.toml
+
+# Ocultar archivos de entorno virtual o temporales
+__pycache__/
+*.pyc
+.DS_Store
